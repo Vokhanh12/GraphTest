@@ -4,8 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 
 public class GraphMain {
@@ -178,9 +182,11 @@ public class GraphMain {
 			e.printStackTrace();
 		}
 		
-		
+		//Kiểm tra ma trận hợp lê 
 		g.KiemTraMaTranHopLe();
+		//Kiểm tra ma trận Vô hướng
 		g.KiemTraDoThiVoHuong();
+		
 		
 		
 		PrinAlg(g, 1);
@@ -217,7 +223,9 @@ public class GraphMain {
 			}
 		}
 		
-		LinkedList<EDGE> listEDGE = new LinkedList<EDGE>();
+		ArrayList<EDGE> listEDGE = new ArrayList<EDGE>();
+		Queue<EDGE> ChoiceMinElement = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
+		
 		int[] V = new int[n];
 		int[] X1 = new int[n];
 		
@@ -225,7 +233,8 @@ public class GraphMain {
 			for(int j=0;j<n;j++) {
 				for(int k=0;k<n;k++) {
 					if(graph.Matrix[j][k]!=0) {
-						listEDGE.add(new EDGE(j,k));
+						listEDGE.add(new EDGE(j,k,graph.Matrix[j][k]));
+						ChoiceMinElement.offer(new EDGE(j,k,graph.Matrix[j][k]));
 					}
 				}
 				
@@ -234,14 +243,19 @@ public class GraphMain {
 			
 			
 			
-			for(EDGE edge : listEDGE) {
+		/*	for(EDGE edge : listEDGE) {
 				System.out.println(""+edge.toString());
 			}
+			*/
+			
 		
 		 
 		
 		
-		
+			while (!ChoiceMinElement.isEmpty()) {
+			    EDGE edge = ChoiceMinElement.poll();
+			    System.out.println(edge.toString());
+			}
 		
 		
 	}        
