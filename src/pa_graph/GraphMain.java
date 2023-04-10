@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -18,11 +19,24 @@ public class GraphMain {
 	public static final String[] MATRIX_ONLY= {"0","1"};
 	public static boolean checkNumber;
 	
+	public static ArrayList<EDGE> listEDGE = new ArrayList<EDGE>();
+	 
+	public static Queue<EDGE> ChoiceMinElement = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
+	
+	public static List<Integer> V_list = new ArrayList<>();
+	public static List<Integer> X1_list = new ArrayList<>();
+	public static List<EDGE> T_list = new ArrayList<>();
+	public static Queue<EDGE> SELECT_WIDTH_GRAPH = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
+
+	
+
+	
 	public class GRAPH_MATRIX{
 		private int n;
 		private int[][] Matrix = new int[MAX][MAX];
 		
 		private int Line=0;
+
 		
 		public int getLine() {
 			for(int i=0;i<n;i++) {
@@ -109,7 +123,7 @@ public class GraphMain {
 		// TODO Auto-generated method stub
 		
 		GraphMain gm = new GraphMain();
-		GraphMain.GRAPH_MATRIX g = gm.new GRAPH_MATRIX(6);
+		GraphMain.GRAPH_MATRIX g = gm.new GRAPH_MATRIX(11);
 		
 		
 		String fileName="D:\\graphfile.txt";
@@ -145,8 +159,8 @@ public class GraphMain {
 				loop1:for(int j =0 ;j<FristLine;j++) {
 					
 						if(arrGet[j].equals("0")||arrGet[j].equals("1")||arrGet[j].equals("2")||arrGet[j].equals("3")
-								||arrGet[j].equals("4")||arrGet[j].equals("5")||arrGet[j].equals("5")
-								||arrGet[j].equals("6")||arrGet[j].equals("7")||arrGet[j].equals("8")||arrGet[j].equals("9")) {
+								||arrGet[j].equals("4")||arrGet[j].equals("5")
+								||arrGet[j].equals("6")||arrGet[j].equals("7")||arrGet[j].equals("8")||arrGet[j].equals("9")||arrGet[j].equals("10")) {
 							//Đưa vào matrix
 							g.Matrix[i][j]=Integer.valueOf(arrGet[j]);
 							checkNumber=true;
@@ -213,23 +227,38 @@ public class GraphMain {
 	}
 	
 	public static void PrinAlg(GRAPH_MATRIX graph,int run) {
+		
+
+		
 		int n = graph.nGet();
 		
+		int DUYET=1;
 		
-		
-		for(int i =0;i<n;i++) {
-			for(int j=0;j<n;j++) {
-				
-			}
+		//Start graph 1
+		V_list.add(DUYET);
+		//Start graph remaining elment 
+		for(int i =V_list.get(0)+DUYET;i<n;i++) {
+			X1_list.add(i);
 		}
 		
-		ArrayList<EDGE> listEDGE = new ArrayList<EDGE>();
-		Queue<EDGE> ChoiceMinElement = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
+		//Xử lý
 		
-		int[] V = new int[n];
-		int[] X1 = new int[n];
-		
+		/*while(!X1_list.isEmpty()) {
 			
+			for(int i=0;i<n;i++) {
+				for(int j=0;j<n;j++) {
+					if(graph.Matrix[i][j]!=0) {
+						
+					}
+				}
+			}
+			
+			
+		}
+		*/
+		
+		
+		//Thêm và xem các phần tử EDGE(đỉnh 1,đỉnh 2,Trọng số)
 			for(int j=0;j<n;j++) {
 				for(int k=0;k<n;k++) {
 					if(graph.Matrix[j][k]!=0) {
@@ -249,16 +278,60 @@ public class GraphMain {
 			*/
 			
 		
-		 
-		
+			System.out.println("Line in graph:"+ChoiceMinElement.size());
+			System.out.println(X1_list);
 		
 			while (!ChoiceMinElement.isEmpty()) {
 			    EDGE edge = ChoiceMinElement.poll();
-			    System.out.println(edge.toString());
+  			    System.out.println(edge.toString());
 			}
+			
+			
+			
+			DUYET(1,graph);
 		
 		
-	}        
+	}   
+	
+	public static void DUYET(int Dinh,GRAPH_MATRIX graph) {
+		
+		if(!X1_list.isEmpty()) {
+		
+		for(int i = 0 ;i<graph.n;i++) {
+			if(graph.Matrix[Dinh-1][i]!=0)
+				
+				SELECT_WIDTH_GRAPH.add(new EDGE(Dinh,i,graph.Matrix[Dinh-1][i]));
+				
+				//T_list.add(new EDGE(Dinh,i,graph.Matrix[Dinh][i]));
+		}
+		
+			   /* while(!SELECT_WIDTH_GRAPH.isEmpty()) {
+			    	EDGE edge = SELECT_WIDTH_GRAPH.poll();
+			    	System.out.println(edge.toString());
+			    }
+			    */
+			
+			EDGE edge =SELECT_WIDTH_GRAPH.poll();
+			    
+			T_list.add(edge);
+			X1_list.remove(Integer.valueOf(edge.getE()));
+			
+			
+			DUYET(edge.getE(),graph);
+			
+			
+			
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+
 	
 	
+	}
 }
