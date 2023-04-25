@@ -1,21 +1,21 @@
 package pa_graph;
 
 public class EDGE {
-	
+
 	int X;
 	int E;
-	
+
 	int weight;
-	
-	public EDGE (int X,int E,int weight) {
-		this.X=X;
-		this.E=E;
+
+	public EDGE(int X, int E, int weight) {
+		this.X = X;
+		this.E = E;
 		this.weight = weight;
 	}
 
 	@Override
 	public String toString() {
-		return "@EDGE[X="+X+",E="+E+"]"+"Weight:"+weight;
+		return "@EDGE[X=" + X + ",E=" + E + "]" + "Weight:" + weight;
 	}
 
 	public int getX() {
@@ -41,6 +41,5 @@ public class EDGE {
 	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	
-	
+
 }

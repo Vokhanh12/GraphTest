@@ -12,326 +12,303 @@ import java.util.ListIterator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-
 public class GraphMain {
-	
+
 	public static final int MAX = 100;
-	public static final String[] MATRIX_ONLY= {"0","1"};
+	public static final String[] MATRIX_ONLY = { "0", "1" };
 	public static boolean checkNumber;
-	
+
 	public static ArrayList<EDGE> listEDGE = new ArrayList<EDGE>();
-	 
+
 	public static Queue<EDGE> ChoiceMinElement = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
-	
+
 	public static List<Integer> V_list = new ArrayList<>();
 	public static List<Integer> X1_list = new ArrayList<>();
 	public static List<EDGE> T_list = new ArrayList<>();
 	public static Queue<EDGE> SELECT_WIDTH_GRAPH = new PriorityQueue<>(Comparator.comparingInt(EDGE::getWeight));
+	public static Boolean Duyet_V = true;
 
-	
-
-	
-	public class GRAPH_MATRIX{
+	public class GRAPH_MATRIX {
 		private int n;
 		private int[][] Matrix = new int[MAX][MAX];
-		
-		private int Line=0;
 
-		
+		private int Line = 0;
+
 		public int getLine() {
-			for(int i=0;i<n;i++) {
-				for(int j=0;j<n;j++) {
-					if(Matrix[i][j]!=0) {
+			for (int i = 0; i < n; i++) {
+				for (int j = 0; j < n; j++) {
+					if (Matrix[i][j] != 0) {
 						Line++;
 					}
 				}
 			}
-			
+
 			return Line;
-			
+
 		}
-		
-		
+
 		public GRAPH_MATRIX(int n) {
-			this.n=n;
-			
+			this.n = n;
+
 		}
-		
-		
+
 		public int nGet() {
 			return n;
 		}
-		
+
 		public void nSet(int nSet) {
-			this.n=nSet;
+			this.n = nSet;
 		}
-		
-		public void MatrixSet(int cols,int rows ,int value) {
-			this.Matrix[cols][rows]=value;
+
+		public void MatrixSet(int cols, int rows, int value) {
+			this.Matrix[cols][rows] = value;
 		}
-		
-		public void MatrixGet(int cols,int rows) {
-			
-			for(int i=0;i<cols;i++) {
-				for(int j=0;j<rows;j++) {
-					System.out.print(Matrix[i][j]+" ");
+
+		public void MatrixGet(int cols, int rows) {
+
+			for (int i = 0; i < cols; i++) {
+				for (int j = 0; j < rows; j++) {
+					System.out.print(Matrix[i][j] + " ");
 				}
 				System.out.println("");
 			}
 		}
-		
+
 		public void KiemTraMaTranHopLe() {
-			int check=0;
-			if(checkNumber) {
-			for(int i=0;i<this.n;i++) {
-				if(Matrix[i][i]!=0)
-				{
-					System.out.println("Ma tran khong hop le");
-					break;
-				} else if(check!=n-1)
-					check++;
-				  else {MatrixGet(n,n);System.out.println("Ma tran nay hop le");}
-			}
-		}
-	}
-		
-	public void KiemTraDoThiVoHuong() {
-		
-		boolean check=false;
-		
-		for(int i=0;i<this.n;i++) {
-			for(int j=0;j<this.n;j++) {
-				if(Matrix[i][j]!=Matrix[j][i])
-				{
-					check=false;
-					break;
+			int check = 0;
+			if (checkNumber) {
+				for (int i = 0; i < this.n; i++) {
+					if (Matrix[i][i] != 0) {
+						System.out.println("Ma tran khong hop le");
+						break;
+					} else if (check != n - 1)
+						check++;
+					else {
+						MatrixGet(n, n);
+						System.out.println("Ma tran nay hop le");
+					}
 				}
-				else check=true;
 			}
 		}
-		
-		if(check) {
-			System.out.println("Day la do thi vo huong");
-		} else {System.out.println("Day khong phai la do thi vo huong");}
-		
+
+		public void KiemTraDoThiVoHuong() {
+
+			boolean check = false;
+
+			for (int i = 0; i < this.n; i++) {
+				for (int j = 0; j < this.n; j++) {
+					if (Matrix[i][j] != Matrix[j][i]) {
+						check = false;
+						break;
+					} else
+						check = true;
+				}
+			}
+
+			if (check) {
+				System.out.println("Day la do thi vo huong");
+			} else {
+				System.out.println("Day khong phai la do thi vo huong");
+			}
+
+		}
 	}
-}
-	
-	
+
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
 		GraphMain gm = new GraphMain();
 		GraphMain.GRAPH_MATRIX g = gm.new GRAPH_MATRIX(11);
-		
-		
-		String fileName="D:\\graphfile.txt";
+
+		String fileName = "D:\\graphfile.txt";
 		try {
-		
-			FileInputStream fileInput=new FileInputStream(fileName);
+
+			FileInputStream fileInput = new FileInputStream(fileName);
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(fileInput));
-			
-			
-			//Lấy phần tử đàu tiên
-			int FristLine=Integer.valueOf(bufferedReader.readLine());
-			
-			//Tạo ma trận
-			
-			//arr Lấy từng hàng và arrGet khởi tạo chuẩn bị tách
+
+			// Lấy phần tử đàu tiên
+			int FristLine = Integer.valueOf(bufferedReader.readLine());
+
+			// Tạo ma trận
+
+			// arr Lấy từng hàng và arrGet khởi tạo chuẩn bị tách
 			String[] arr = new String[FristLine];
 			String[] arrGet = new String[FristLine];
-			
-			String line; int a=0;
-			while((line=bufferedReader.readLine())!=null) {
-				
-				if(a!=FristLine)
-				arr[a]=line;
-				else break;
-				
-				a++;
-				
-			}
-			
-			loop0:for(int i =0 ;i<FristLine;i++) {
-				//arrGet tách
-				arrGet=arr[i].split(" ");
-				loop1:for(int j =0 ;j<FristLine;j++) {
-					
-						if(arrGet[j].equals("0")||arrGet[j].equals("1")||arrGet[j].equals("2")||arrGet[j].equals("3")
-								||arrGet[j].equals("4")||arrGet[j].equals("5")
-								||arrGet[j].equals("6")||arrGet[j].equals("7")||arrGet[j].equals("8")||arrGet[j].equals("9")||arrGet[j].equals("10")) {
-							//Đưa vào matrix
-							g.Matrix[i][j]=Integer.valueOf(arrGet[j]);
-							checkNumber=true;
 
-						}else {
-							System.out.println("Trong ma tran khong co con so nay:"+arrGet[j]);
-							checkNumber=false;
-							break loop0;
-						
+			String line;
+			int a = 0;
+			while ((line = bufferedReader.readLine()) != null) {
+
+				if (a != FristLine)
+					arr[a] = line;
+				else
+					break;
+
+				a++;
+
+			}
+
+			loop0: for (int i = 0; i < FristLine; i++) {
+				// arrGet tách
+				arrGet = arr[i].split(" ");
+				loop1: for (int j = 0; j < FristLine; j++) {
+
+					if (arrGet[j].equals("0") || arrGet[j].equals("1") || arrGet[j].equals("2") || arrGet[j].equals("3")
+							|| arrGet[j].equals("4") || arrGet[j].equals("5") || arrGet[j].equals("6")
+							|| arrGet[j].equals("7") || arrGet[j].equals("8") || arrGet[j].equals("9")
+							|| arrGet[j].equals("10")) {
+						// Đưa vào matrix
+						g.Matrix[i][j] = Integer.valueOf(arrGet[j]);
+						checkNumber = true;
+
+					} else {
+						System.out.println("Trong ma tran khong co con so nay:" + arrGet[j]);
+						checkNumber = false;
+						break loop0;
+
 					}
 
-					
 				}
 			}
-			
-			
-			
-			
-			
-	/*		for(int i=0;i<4;i++) {
-				for(int j=0;j<4;j++) {
-					System.out.print(g.Matrix[i][j]);
-				}
-				System.out.println();
 
-			}
-			
-			*/
-			
-		bufferedReader.close();
-		
-		}catch(IOException e) {
+			/*
+			 * for(int i=0;i<4;i++) { for(int j=0;j<4;j++) {
+			 * System.out.print(g.Matrix[i][j]); } System.out.println();
+			 * 
+			 * }
+			 * 
+			 */
+
+			bufferedReader.close();
+
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//Kiểm tra ma trận hợp lê 
+
+		// Kiểm tra ma trận hợp lê
 		g.KiemTraMaTranHopLe();
-		//Kiểm tra ma trận Vô hướng
+		// Kiểm tra ma trận Vô hướng
 		g.KiemTraDoThiVoHuong();
-		
-		
-		
+
 		PrinAlg(g, 1);
-		
+
 	}
-	
-	
-	
+
 	public static void InMatrix(BufferedReader bufferedReader) {
-		
+
 		String line;
-		
+
 		try {
-		
-		while((line=bufferedReader.readLine())!=null)
-			{
+
+			while ((line = bufferedReader.readLine()) != null) {
 				System.out.println(line);
 			}
-		
-		}catch(IOException IOe) {
+
+		} catch (IOException IOe) {
 			IOe.printStackTrace();
 		}
-		
-	}
-	
-	public static void PrinAlg(GRAPH_MATRIX graph,int run) {
-		
 
-		
+	}
+
+	public static void PrinAlg(GRAPH_MATRIX graph, int run) {
+
 		int n = graph.nGet();
-		
-		int DUYET=1;
-		
-		//Start graph 1
-		V_list.add(DUYET);
-		//Start graph remaining elment 
-		for(int i =V_list.get(0)+DUYET;i<n;i++) {
+
+		int DUYET;
+
+		V_list.add(-1);
+
+		// Start graph 1
+		// V_list.add(DUYET);
+		// Start graph remaining elment
+		for (int i = 0; i < n; i++) {
 			X1_list.add(i);
 		}
-		
-		//Xử lý
-		
-		/*while(!X1_list.isEmpty()) {
-			
-			for(int i=0;i<n;i++) {
-				for(int j=0;j<n;j++) {
-					if(graph.Matrix[i][j]!=0) {
-						
-					}
-				}
-			}
-			
-			
-		}
-		*/
-		
-		
-		//Thêm và xem các phần tử EDGE(đỉnh 1,đỉnh 2,Trọng số)
-			for(int j=0;j<n;j++) {
-				for(int k=0;k<n;k++) {
-					if(graph.Matrix[j][k]!=0) {
-						listEDGE.add(new EDGE(j,k,graph.Matrix[j][k]));
-						ChoiceMinElement.offer(new EDGE(j,k,graph.Matrix[j][k]));
-					}
-				}
-				
-			}
-			
-			
-			
-			
-		/*	for(EDGE edge : listEDGE) {
-				System.out.println(""+edge.toString());
-			}
-			*/
-			
-		
-			System.out.println("Line in graph:"+ChoiceMinElement.size());
-			System.out.println(X1_list);
-		
-			while (!ChoiceMinElement.isEmpty()) {
-			    EDGE edge = ChoiceMinElement.poll();
-  			    System.out.println(edge.toString());
-			}
-			
-			
-			
-			DUYET(1,graph);
-		
-		
-	}   
-	
-	public static void DUYET(int Dinh,GRAPH_MATRIX graph) {
-		
-		if(!X1_list.isEmpty()) {
-		
-		for(int i = 0 ;i<graph.n;i++) {
-			if(graph.Matrix[Dinh-1][i]!=0)
-				
-				SELECT_WIDTH_GRAPH.add(new EDGE(Dinh,i,graph.Matrix[Dinh-1][i]));
-				
-				//T_list.add(new EDGE(Dinh,i,graph.Matrix[Dinh][i]));
-		}
-		
-			   /* while(!SELECT_WIDTH_GRAPH.isEmpty()) {
-			    	EDGE edge = SELECT_WIDTH_GRAPH.poll();
-			    	System.out.println(edge.toString());
-			    }
-			    */
-			
-			EDGE edge =SELECT_WIDTH_GRAPH.poll();
-			    
-			T_list.add(edge);
-			X1_list.remove(Integer.valueOf(edge.getE()));
-			
-			
-			DUYET(edge.getE(),graph);
-			
-			
-			
-		
-		
-		
-		
-		
-		
-		
-	}
-	
 
-	
-	
+		// Xử lý
+
+		/*
+		 * while(!X1_list.isEmpty()) {
+		 * 
+		 * for(int i=0;i<n;i++) { for(int j=0;j<n;j++) { if(graph.Matrix[i][j]!=0) {
+		 * 
+		 * } } }
+		 * 
+		 * 
+		 * }
+		 */
+
+		// Thêm và xem các phần tử EDGE(đỉnh 1,đỉnh 2,Trọng số)
+		for (int j = 0; j < n; j++) {
+			for (int k = 0; k < n; k++) {
+				if (graph.Matrix[j][k] != 0) {
+					listEDGE.add(new EDGE(j, k, graph.Matrix[j][k]));
+					ChoiceMinElement.offer(new EDGE(j, k, graph.Matrix[j][k]));
+				}
+			}
+
+		}
+
+		/*
+		 * for(EDGE edge : listEDGE) { System.out.println(""+edge.toString()); }
+		 */
+
+		System.out.println("Line in graph:" + ChoiceMinElement.size());
+		System.out.println(X1_list);
+
+		while (!ChoiceMinElement.isEmpty()) {
+			EDGE edge = ChoiceMinElement.poll();
+			System.out.println(edge.toString());
+		}
+
+		DUYET(0, graph);
+
+	}
+
+	public static void DUYET(int Dinh, GRAPH_MATRIX graph) {
+		
+
+		if (!X1_list.isEmpty()) {
+
+			loop1: for (int i = 0; i < graph.n; i++) {
+				if (graph.Matrix[Dinh][i] != 0) {
+					int count =0;
+					loop2: for (int item : V_list) {
+							if (item != Dinh && item != i) {
+								count++;
+								if(count == V_list.size()) {
+									SELECT_WIDTH_GRAPH.offer(new EDGE(Dinh, i, graph.Matrix[Dinh][i]));
+								}	
+							}
+					}
+					// T_list.add(new EDGE(Dinh,i,graph.Matrix[Dinh][i]));}
+
+				}
+			}
+
+			/*
+			 * while(!SELECT_WIDTH_GRAPH.isEmpty()) { EDGE edge = SELECT_WIDTH_GRAPH.poll();
+			 * System.out.println(edge.toString()); }
+			 */
+			try {
+				EDGE edge = SELECT_WIDTH_GRAPH.poll();
+
+				System.out.println("E:" + edge.getE());
+
+				V_list.add(Dinh);
+				
+				T_list.add(edge);
+
+				X1_list.remove(Integer.valueOf(edge.getE()));
+
+				DUYET(edge.getE(), graph);
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+		}
+
 	}
 }
